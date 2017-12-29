@@ -503,19 +503,15 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
 
 ######################## Part 5 - Usage ####################################
 
-df = pd.read_csv('Python-DM-Classification-05-RFc.csv', sep = ';')
+df = pd.read_csv('Python-DM-Classification-05-RF.csv', sep = ';')
 
 X = df.iloc[:, 0:4]
 y = df.iloc[:, 4]
-
-Xdata = df.iloc[:, 0:4]
-ydata = df.iloc[:, 4]
 
 # Building the Model
 dt_model = dt_rf(X, y, forest_size = 5)
 
 # Prediction
-test =  df.iloc[0:2, 0:4]
 test =  df.iloc[:, 0:4]
 pred = prediction_dt_rf(dt_model, test)
 
