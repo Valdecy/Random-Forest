@@ -157,7 +157,7 @@ def prediction_dt_rf(model, Xdata):
         if pred.at[i, "Fired Rules"] == 0:
             pred.at[i, "Prediction"] = "-//-"
     
-    return pred, data
+    return pred, Xdata
 
 # Function: Calculates oob error estimates
 def oob_error_estimates(model, Xdata, ydata):
