@@ -52,7 +52,6 @@ def prediction_dt_rf(model, Xdata):
         pred  = pd.concat([pred, label], axis = 1)
     data  = pd.concat([ydata, Xdata], axis = 1)
     rule = []
-    rule_list = []
     for j in range(0, data.shape[1]):
         if data.iloc[:,j].dtype == "bool":
             data.iloc[:,j] = data.iloc[:, j].astype(str)
@@ -126,7 +125,6 @@ def prediction_dt_rf(model, Xdata):
                         rule_count = rule_count + 1
                         if (rule_count == rule_confirmation):
                             pred.at[pred.index[i], rule[j][len(rule[j]) - 1]] += 1
-                            rule_list.append(rule[j])
                     else:
                         k = len(rule[j])
                 elif is_number_value(data[rule[j][k]][i]) == True:
@@ -135,7 +133,6 @@ def prediction_dt_rf(model, Xdata):
                              rule_count = rule_count + 1
                              if (rule_count == rule_confirmation):
                                  pred.at[pred.index[i], rule[j][len(rule[j]) - 1]] += 1
-                                 rule_list.append(rule[j])
                          else:
                              k = len(rule[j])
                      elif rule[j][k+1].find(">") == 0:
@@ -143,11 +140,9 @@ def prediction_dt_rf(model, Xdata):
                              rule_count = rule_count + 1
                              if (rule_count == rule_confirmation):
                                  pred.at[pred.index[i], rule[j][len(rule[j]) - 1]] += 1
-                                 rule_list.append(rule[j])
                          else:
                              k = len(rule[j])
     
-    #rule_list = [list(x) for x in set(tuple(x) for x in rule_list)]
     for i in range(0, pred.shape[0]):
         for j in range(1, pred.shape[1]):
             if pred.iloc[i][j] == pred.max(axis=1)[i]:
@@ -162,7 +157,7 @@ def prediction_dt_rf(model, Xdata):
         if pred.at[i, "Fired Rules"] == 0:
             pred.at[i, "Prediction"] = "-//-"
     
-    return pred, rule_list
+    return pred, data
 
 # Function: Calculates oob error estimates
 def oob_error_estimates(model, Xdata, ydata):
@@ -201,8 +196,6 @@ def oob_error_estimates(model, Xdata, ydata):
     else:
         error = 1 - (count)/(oob_pred.shape[0] - adjustment)
     
-    flat_list = [item for sublist in oob_rule_list for item in sublist]
-    #flat_list = [list(x) for x in set(tuple(x) for x in flat_list)]
     oob_pred = oob_pred[oob_pred.Prediction.str.contains("No Rules Left") == False]
     cm = confusion_matrix(oob_pred.iloc[:,1], oob_pred.iloc[:,2], labels = classes)
     row_sum = np.sum(cm, axis = 1) 
@@ -231,7 +224,7 @@ def oob_error_estimates(model, Xdata, ydata):
     plt.xlabel('Predicted Label')
     plt.show()
    
-    return oob_pred, flat_list
+    return oob_pred
 
 # Function: Calculates the Gini Index  
 def gini_index(target, feature = [], uniques = []):
