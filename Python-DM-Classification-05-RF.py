@@ -162,7 +162,6 @@ def prediction_dt_rf(model, Xdata):
 # Function: Calculates oob error estimates
 def oob_error_estimates(model, Xdata, ydata):
     oob_list = model[1]   
-    oob_rule_list = []
     name = ydata.name
     classes = ydata.unique()
     ydata = pd.DataFrame(ydata.values.reshape((ydata.shape[0], 1))) 
@@ -179,7 +178,6 @@ def oob_error_estimates(model, Xdata, ydata):
         if len(sliced_model[0]) != 1:
             p = prediction_dt_rf(sliced_model, Xdata.iloc[[i]])
             oob_pred.at[oob_pred.index[i], "Prediction"] = p[0].iloc[0, 0]
-            oob_rule_list.append(p[1])
         else:
             oob_pred.at[oob_pred.index[i], "Prediction"] = "No Rules Left"
     
