@@ -422,7 +422,7 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
                      if "." not in rule[i]:
                          rule[i] = rule[i] + " THEN " + name + " = " + branch[i].iloc[0, 0] + "."
                          rule[i] = rule[i].replace(" AND  THEN ", " THEN ")
-                         if i == 1:
+                         if i == 1 and bin_names[element] == "binary":
                              rule[i] = rule[i].replace(".", "")
                      skip_update = True
                      break
