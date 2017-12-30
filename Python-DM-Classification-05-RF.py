@@ -155,7 +155,7 @@ def prediction_dt_rf(model, Xdata):
     
     for i in range(0, pred.shape[0]):
         if pred.at[i, "Fired Rules"] == 0:
-            pred.at[i, "Prediction"] = "-//-"
+            pred.at[i, "Prediction"] = "No Rule was Fired"
     
     return pred, Xdata
 
@@ -179,14 +179,14 @@ def oob_error_estimates(model, Xdata, ydata):
             p = prediction_dt_rf(sliced_model, Xdata.iloc[[i]])
             oob_pred.at[oob_pred.index[i], "Prediction"] = p[0].iloc[0, 0]
         else:
-            oob_pred.at[oob_pred.index[i], "Prediction"] = "No Rules Left"
+            oob_pred.at[oob_pred.index[i], "Prediction"] = "No Rule was Fired"
     
     count = 0
     adjustment = 0
     for i in range(0, oob_pred.shape[0]):
-        if oob_pred.at[i, "Prediction"] == "No Rules Left":
+        if oob_pred.at[i, "Prediction"] == "No Rule was Fired":
             adjustment = adjustment + 1
-        if oob_pred.at[i, "Prediction"] == oob_pred.iloc[i, 1]  and oob_pred.at[i, "Prediction"] != "No Rules Left":
+        if oob_pred.at[i, "Prediction"] == oob_pred.iloc[i, 1]  and oob_pred.at[i, "Prediction"] != "No Rule was Fired":
             count = count + 1
    
     if oob_pred.shape[0] - adjustment == 0:
@@ -197,7 +197,7 @@ def oob_error_estimates(model, Xdata, ydata):
     oob_pred = oob_pred[oob_pred.Prediction.str.contains("No Rules Left") == False]
     cm = confusion_matrix(oob_pred.iloc[:,1], oob_pred.iloc[:,2], labels = classes)
     row_sum = np.sum(cm, axis = 1) 
-    string = " Classes Errors ==> "
+    string = " Class Errors ==> "
     for i in range(0, len(classes)):
         for j in range(0, len(classes)):
             if i == j and row_sum[i] > 0:
