@@ -9,7 +9,7 @@ cat_missing = "none", "missing", "most", "remove" or "probability". If "none" is
 
 num_missing = "none", "mean", "median", "remove" or "probability". If "none" is selected then nothing will be done if there are missing numerical values. If "mean" is selected then the missin gnumerical values will be replaced by the attribute mean. If "median" is selected then the numerical missing values will be replaced by the attribute median. If "most" is selected then the numerical missing values will be replaced by the most popular value of the attribute. If "remove" is selected then the observation with missing numerical values will be deleted from the dataset. If "probability" is selected then the numerical missing values will be randomly replaced by a value based on the numerical distribution of the attribute.
 
-forest_size = The total number of decision trees that will form the forest, at least 1 decision tree will be planted. The default value is 5.
+forest_size = The total number of decision trees that will be planted to form the forest. The default value is 5.
 
 m_attributes = Each Decision tree is planted using a random subset of attributes. The default value of the subset size is the nearest integer of the square root of the total number of attributes.
 
