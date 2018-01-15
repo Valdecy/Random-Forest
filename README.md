@@ -15,4 +15,4 @@ m_attributes = Each Decision tree is planted using a random subset of attributes
 
 An out-of-bag function is given - oob_error_estimates(model, Xdata, ydata) - which calculates the Random Forest estimated oob error and also returns a confusion matrix of the target attribute.
 
-Finnaly a prediction function - prediction_dt_cart(model, Xdata ) - is also included.
+Finnaly a prediction function - prediction_dt_rf(model, Xdata) - is also included.
