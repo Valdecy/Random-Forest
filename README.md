@@ -1,5 +1,5 @@
 # Random Forest Algorithm
-The Random Forest Algorithm uses the Gini Index measure to analyse numerical data. Categorical data is handled by a one-hot encoding transformation, creating in this way, a dummy variable for each category. This can guarantee that the binary splits can always occur. The function returns: 1) The Forest - A set of decision trees and each one of their set of rules. 2) The list of observations used to plant a decision tree (about 2/3 of the total observations for each tree).
+The Random Forest Algorithm uses the Gini Index measure to analyse numerical data. Categorical data is handled by a one-hot encoding transformation, creating in this way, a dummy variable for each category. This guarantees that the binary splits will always occur. The function returns: 1) The Forest - A set of decision trees and each one of their set of rules. 2) The list of observations used to plant a decision tree (about 2/3 of the total observations for each tree).
 
 Xdata = Dataset Attributes
 
