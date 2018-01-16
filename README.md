@@ -1,5 +1,5 @@
 # Random Forest Algorithm
-The Random Forest Algorithm uses the Gini Index measure to analyse numerical data. Categorical data is handled by a one-hot encoding transformation, creating in this way, a dummy variable for each category. This can guarantee that the binary splits can always occur. The function returns: 1) The Forest - A set of decision trees and each one of their set of rules. 2) The list of observations used to plant each tree.
+The Random Forest Algorithm uses the Gini Index measure to analyse numerical data. Categorical data is handled by a one-hot encoding transformation, creating in this way, a dummy variable for each category. This can guarantee that the binary splits can always occur. The function returns: 1) The Forest - A set of decision trees and each one of their set of rules. 2) The list of observations used to plant each tree, because each decision tree is planted using 2/3 of the total observations.
 
 Xdata = Dataset Attributes
 
@@ -11,8 +11,8 @@ num_missing = "none", "mean", "median", "remove" or "probability". If "none" is 
 
 forest_size = The total number of decision trees that will be planted to form the forest. The default value is 5.
 
-m_attributes = Each Decision tree is planted using a random subset of attributes. The default value of the subset size is the nearest integer of the square root of the total number of attributes.
+m_attributes = Each decision tree is planted using a random subset of attributes. The default value of the subset size is the nearest integer of the square root of the total number of attributes.
 
-An out-of-bag function is given - oob_error_estimates(model, Xdata, ydata) - which calculates the Random Forest estimated oob error and also returns a confusion matrix of the target attribute.
+An out-of-bag (oob) function is given - oob_error_estimates(model, Xdata, ydata) - which calculates the Random Forest estimated oob error and also returns a confusion matrix of the target attribute.
 
 Finnaly a prediction function - prediction_dt_rf(model, Xdata) - is also included.
