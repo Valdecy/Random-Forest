@@ -13,6 +13,6 @@ The Random Forest Algorithm uses the Gini Index measure to analyse numerical dat
 
 * m_attributes = Each decision tree is planted using a random subset of attributes. The default value of the subset size is the nearest integer of the square root of the total number of attributes.
 
-An out-of-bag (oob) function is given - oob_error_estimates(model, Xdata, ydata) - which calculates the Random Forest estimated oob error and also returns a confusion matrix of the target attribute.
+* An out-of-bag (oob) function is given - oob_error_estimates(model, Xdata, ydata) - which calculates the Random Forest estimated oob error and also returns a confusion matrix of the target attribute.
 
-Finnaly a prediction function - prediction_dt_rf(model, Xdata) - is also included.
+* Finnaly a prediction function - prediction_dt_rf(model, Xdata) - is also included.
