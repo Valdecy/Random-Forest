@@ -420,7 +420,7 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
                     break
                 if (len(np.unique(branch[i][0])) == 1 or len(branch[i]) == 1) and full_names[element] in rd:
                      if "." not in rule[i]:
-                         rule[i] = rule[i] + " THEN " + name + " = " + branch[i].iloc[0, 0] + "."
+                         rule[i] = rule[i] + " THEN " + name + " = " + str(branch[i].iloc[0, 0]) + "."
                          rule[i] = rule[i].replace(" AND  THEN ", " THEN ")
                          if i == 1 and (rule[i].find("{0}") != -1 or rule[i].find("{1}")!= -1):
                              rule[i] = rule[i].replace(".", "")
