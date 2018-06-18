@@ -290,6 +290,10 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
     for j in range(0, dataset.shape[1]):
         if dataset.iloc[:,j].dtype == "bool":
             dataset.iloc[:,j] = dataset.iloc[:, j].astype(str)
+    
+    # Preprocessing - Boolean Values
+    if ydata.iloc[:,0].dtype == "bool":
+        ydata.iloc[:,0] = ydata.iloc[:, 0].astype(str)
 
     # Preprocessing - Missing Values
     if cat_missing != "none":
@@ -361,6 +365,14 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
                    dataset.iloc[i,j] = str(0)
                else:
                    dataset.iloc[i,j] = str(1)
+    
+    # Preprocessing - Binary Values
+    for i in range(0, ydata.shape[0]):
+        if ydata.iloc[:,0].dropna().value_counts().index.isin([0,1]).all():
+           if ydata.iloc[i,0] == 0:
+               ydata.iloc[i,0] = str(0)
+           else:
+               ydata.iloc[i,0] = str(1)
     
     original  = dataset.copy(deep = True)
     forest    = [None]*1
