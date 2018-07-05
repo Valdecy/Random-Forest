@@ -46,6 +46,13 @@ def prediction_dt_rf(model, Xdata):
     remove_redundant_rules = True
     model = model[0]
     ydata = pd.DataFrame(index=range(0, Xdata.shape[0]), columns=["Prediction"])
+    for j in range(0, ydata.shape[1]):
+        if ydata.iloc[:,j].dropna().value_counts().index.isin([0,1]).all():
+            for i in range(0, ydata.shape[0]):          
+               if ydata.iloc[i,j] == 0:
+                   ydata.iloc[i,j] = "zero"
+               else:
+                   ydata.iloc[i,j] = "one"
     pred  = pd.DataFrame(index=range(0, Xdata.shape[0]), columns=["Prediction"])
     for i in range(0, len(model[len(model)-1])):
         label = pd.DataFrame(0, index=range(0, Xdata.shape[0]), columns=[model[len(model)-1][i]])
@@ -121,7 +128,7 @@ def prediction_dt_rf(model, Xdata):
                     zeros = pd.DataFrame(0, index = range(0, data.shape[0]), columns = [rule[j][k]])
                     data  = pd.concat([data, zeros], axis = 1)
                 if is_number_value(data[rule[j][k]][i]) == False:
-                    if (data[rule[j][k]][i] in rule[j]):
+                    if (data[rule[j][k]][i] in rule[j][k+1]):
                         rule_count = rule_count + 1
                         if (rule_count == rule_confirmation):
                             pred.at[pred.index[i], rule[j][len(rule[j]) - 1]] += 1
@@ -163,9 +170,17 @@ def prediction_dt_rf(model, Xdata):
 def oob_error_estimates(model, Xdata, ydata):
     oob_list = model[1]   
     name = ydata.name
-    classes = ydata.unique()
-    ydata = pd.DataFrame(ydata.values.reshape((ydata.shape[0], 1))) 
+    #classes = ydata.unique()
+    ydata = pd.DataFrame(ydata.values.reshape((ydata.shape[0], 1)))
+    for j in range(0, ydata.shape[1]):
+        if ydata.iloc[:,j].dropna().value_counts().index.isin([0,1]).all():
+            for i in range(0, ydata.shape[0]):          
+               if ydata.iloc[i,j] == 0:
+                   ydata.iloc[i,j] = "zero"
+               else:
+                   ydata.iloc[i,j] = "one"
     ydata.columns = [name]
+    classes = ydata.iloc[:,0].unique()
     oob_observations = pd.DataFrame({'Observations' : pd.Series(range(0,Xdata.shape[0]))})       
     oob_pred  = pd.DataFrame(index=range(0, Xdata.shape[0]), columns=["Prediction"])
     oob_pred  = pd.concat([oob_observations, ydata, oob_pred], axis = 1)
@@ -283,17 +298,23 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
     n_rows = Xdata.shape[0] - int(Xdata.shape[0]*(2/3))
     # Preprocessing - Creating Dataframe
     name = ydata.name        
-    ydata = pd.DataFrame(ydata.values.reshape((ydata.shape[0], 1)))
-    dataset = pd.concat([ydata, Xdata], axis = 1)  
+    ydata = pd.DataFrame(ydata.values.reshape((ydata.shape[0], 1)))   
     
+    # Preprocessing - Binary Values
+    for j in range(0, ydata.shape[1]):
+        if ydata.iloc[:,j].dropna().value_counts().index.isin([0,1]).all():
+            for i in range(0, ydata.shape[0]):          
+               if ydata.iloc[i,j] == 0:
+                   ydata.iloc[i,j] = "zero"
+               else:
+                   ydata.iloc[i,j] = "one"
+    
+    dataset = pd.concat([ydata, Xdata], axis = 1)  
+                      
      # Preprocessing - Boolean Values
     for j in range(0, dataset.shape[1]):
         if dataset.iloc[:,j].dtype == "bool":
             dataset.iloc[:,j] = dataset.iloc[:, j].astype(str)
-    
-    # Preprocessing - Boolean Values
-    if ydata.iloc[:,0].dtype == "bool":
-        ydata.iloc[:,0] = ydata.iloc[:, 0].astype(str)
 
     # Preprocessing - Missing Values
     if cat_missing != "none":
@@ -366,14 +387,6 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
                else:
                    dataset.iloc[i,j] = str(1)
     
-    # Preprocessing - Binary Values
-    for i in range(0, ydata.shape[0]):
-        if ydata.iloc[:,0].dropna().value_counts().index.isin([0,1]).all():
-           if ydata.iloc[i,0] == 0:
-               ydata.iloc[i,0] = str(0)
-           else:
-               ydata.iloc[i,0] = str(1)
-    
     original  = dataset.copy(deep = True)
     forest    = [None]*1
     oob_samples = [None]*1
@@ -432,7 +445,7 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
                     break
                 if (len(np.unique(branch[i][0])) == 1 or len(branch[i]) == 1) and full_names[element] in rd:
                      if "." not in rule[i]:
-                         rule[i] = rule[i] + " THEN " + name + " = " + str(branch[i].iloc[0, 0]) + "."
+                         rule[i] = rule[i] + " THEN " + name + " = " + branch[i].iloc[0, 0] + "."
                          rule[i] = rule[i].replace(" AND  THEN ", " THEN ")
                          if i == 1 and (rule[i].find("{0}") != -1 or rule[i].find("{1}")!= -1):
                              rule[i] = rule[i].replace(".", "")
