@@ -444,11 +444,11 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
                     skip_update = True 
                     break
                 if (len(np.unique(branch[i][0])) == 1 or len(branch[i]) == 1) and full_names[element] in rd:
-                     if "." not in rule[i]:
-                         rule[i] = rule[i] + " THEN " + name + " = " + branch[i].iloc[0, 0] + "."
+                     if ";" not in rule[i]:
+                         rule[i] = rule[i] + " THEN " + name + " = " + branch[i].iloc[0, 0] + ";"
                          rule[i] = rule[i].replace(" AND  THEN ", " THEN ")
                          if i == 1 and (rule[i].find("{0}") != -1 or rule[i].find("{1}")!= -1):
-                             rule[i] = rule[i].replace(".", "")
+                             rule[i] = rule[i].replace(";", "")
                      skip_update = True
                      break
                 if is_number(dataset.iloc[:, element]) == True and full_names[element] in rd and bin_names[element] != "binary":
@@ -498,7 +498,7 @@ def dt_rf(Xdata, ydata, cat_missing = "none", num_missing = "none", forest_size 
             stop = len(rule)
         
         for i in range(len(rule) - 1, -1, -1):
-            if rule[i].endswith(".") == False:
+            if rule[i].endswith(";") == False:
                 del rule[i]   
         
         rule.append("Total Number of Rules: " + str(len(rule)))
