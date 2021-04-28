@@ -102,7 +102,7 @@ def prediction_dt_rf(model, Xdata):
         for j in range(0, len(dt_model[i])):
             dt_model[i][j] = dt_model[i][j].replace("{", "")
             dt_model[i][j] = dt_model[i][j].replace("}", "")
-            dt_model[i][j] = dt_model[i][j].replace(".", "")
+            dt_model[i][j] = dt_model[i][j].replace(";", "")
             dt_model[i][j] = dt_model[i][j].replace("IF ", "")
             dt_model[i][j] = dt_model[i][j].replace("AND", "")
             dt_model[i][j] = dt_model[i][j].replace("THEN", "")
